@@ -6,6 +6,7 @@
     <title>Umar Rahi - Aspiring Software Developer</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -145,6 +146,17 @@
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="white" stop-opacity=".1"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><circle cx="10" cy="10" r="10" fill="url(%23a)"><animateTransform attributeName="transform" type="translate" values="0,0; 90,0; 0,0" dur="3s" repeatCount="indefinite"/></circle></svg>');
             animation: float 6s ease-in-out infinite;
         }
+        .profile-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-img:hover img {
+    transform: scale(1.1);
+}
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
@@ -830,8 +842,8 @@
         <div class="container">
             <h2 class="section-title fade-in">About Me</h2>
             <div class="about-content fade-in">
-                <div class="profile-img">
-                    <i class="fas fa-user icon-user"></i>
+               <div class="profile-img">
+                  <img src="images/profile.jpg" alt="Umar Rahi Profile Picture">
                 </div>
                 <div class="about-text">
                     <h3>Hello! I'm Umar Rahi</h3>
@@ -933,9 +945,9 @@
                             <span class="tech-tag">Chart.js</span>
                             <span class="tech-tag">Random Forest</span>
                         </div>
-                        <a href="https://github.com/umrarahi" class="btn btn-primary" target="_blank">
-                            <i class="fab fa-github"></i>
-                            View on GitHub
+                        <a href="https://github.com/Umar-Rahi" class="btn btn-primary" target="_blank">
+                            <i class="fab fa-github icon-github icon-fallback"></i>
+                            <span>View on GitHub</span>
                         </a>
                     </div>
                 </div>
@@ -957,9 +969,9 @@
                             <span class="tech-tag">Java</span>
                             <span class="tech-tag">NLP</span>
                         </div>
-                        <a href="https://github.com/umrarahi" class="btn btn-primary" target="_blank">
-                            <i class="fab fa-github"></i>
-                            View on GitHub
+                        <a href="https://github.com/Umar-Rahi" class="btn btn-primary" target="_blank">
+                            <i class="fab fa-github icon-github icon-fallback"></i>
+                            <span>View on GitHub</span>
                         </a>
                     </div>
                 </div>
@@ -1134,7 +1146,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h4>Location</h4>
-                            <p>Islam Nagar, Saharanpur<br>Uttar Pradesh, 247451</p>
+                            <p>Dehradun<br>Uttarakhand, 248001</p>
                         </div>
                     </div>
                     
@@ -1142,7 +1154,7 @@
                         <i class="fab fa-github"></i>
                         <div>
                             <h4>GitHub</h4>
-                            <a href="https://github.com/umrarahi" target="_blank">github.com/umrarahi</a>
+                            <a href="https://github.com/Umar-Rahi" target="_blank">github.com/Umar-Rahi</a>
                         </div>
                     </div>
                     
@@ -1162,7 +1174,7 @@
     <footer class="footer">
         <div class="container">
             <div class="social-links">
-                <a href="https://github.com/umrarahi" class="social-link" target="_blank">
+                <a href="https://github.com/Umar-Rahi" class="social-link" target="_blank">
                     <i class="fab fa-github"></i>
                 </a>
                 <a href="https://www.linkedin.com/in/umar-rahi-573003148" class="social-link" target="_blank">
@@ -1293,71 +1305,154 @@
             event.target.reset();
         }
 
-        // Download Resume Function
+        // Download Resume Function - Direct Download from GitHub
         function downloadResume() {
-            // Create a simple resume content
-            const resumeContent = `
-UMAR RAHI
-Aspiring Software Developer
+            // Your GitHub raw file URL (converted from the link you provided)
+            const resumeUrl = 'https://github.com/Umar-Rahi/About-me/raw/21f27f16c5ae24cd0b15c3863f4749ece7b12a51/Umar_Rahi_Resume.pdf';
+            
+            try {
+                // Method 1: Direct download using fetch (handles CORS better)
+                fetch(resumeUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        // Create blob URL
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        
+                        // Create download link
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = 'Umar_Rahi_Resume.pdf';
+                        link.style.display = 'none';
+                        
+                        // Trigger download
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        // Clean up blob URL
+                        setTimeout(() => {
+                            window.URL.revokeObjectURL(blobUrl);
+                        }, 1000);
+                        
+                        // Show success notification
+                        showNotification('📄 Resume downloaded successfully! Check your downloads folder.', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Fetch download failed:', error);
+                        // Fallback to direct link method
+                        fallbackDownload(resumeUrl);
+                    });
+                    
+            } catch (error) {
+                console.error('Download error:', error);
+                // Fallback method
+                fallbackDownload(resumeUrl);
+            }
+        }
 
-Contact Information:
-Email: urahi788@gmail.com
-Phone: +91 9897286357
-Location: Islam Nagar, Saharanpur, UP 247451
-LinkedIn: https://www.linkedin.com/in/umar-rahi-573003148
-GitHub: https://github.com/umrarahi
+        // Fallback download method
+        function fallbackDownload(url) {
+            try {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'Umar_Rahi_Resume.pdf';
+                link.target = '_blank'; // Only as fallback
+                link.rel = 'noopener noreferrer';
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('📄 Resume download started! If it opens in browser, right-click and "Save As".', 'info');
+            } catch (error) {
+                console.error('Fallback download failed:', error);
+                showNotification('❌ Download failed. Please contact me directly at urahi788@gmail.com', 'error');
+            }
+        }
 
-CAREER OBJECTIVE:
-Aspiring software developer pursuing MCA (2024–26) with hands-on experience in full-stack projects and a strong foundation in programming, aiming to contribute to innovative software solutions.
+        // Alternative method using iframe (sometimes bypasses CORS)
+        function downloadResumeViaIframe() {
+            const resumeUrl = 'https://github.com/Umar-Rahi/About-me/raw/21f27f16c5ae24cd0b15c3863f4749ece7b12a51/Umar_Rahi_Resume.pdf';
+            
+            // Create hidden iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = resumeUrl;
+            
+            document.body.appendChild(iframe);
+            
+            // Remove iframe after download
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 3000);
+            
+            showNotification('📄 Resume download initiated!', 'success');
+        }
 
-TECHNICAL SKILLS:
-• Languages: C, C++, Java, Python, JavaScript, PHP, C#
-• Web Technologies: HTML, CSS, MySQL, WordPress, XAMPP
-• Tools & IDEs: Android Studio, GitHub, IntelliJ IDEA, Eclipse, Xcode
-• AI Tools: ChatGPT, Claude AI, Gemini, Prompt Engineering, LLM APIs
-• Database: Oracle, MySQL
-• Operating Systems: Windows, Linux
-
-PROJECTS:
-1. AQI Predictor Web Application
-   - Technologies: Flask, Python, Machine Learning, Chart.js
-   - Developed full-stack AQI predictor using Random Forest & API data
-   - Features responsive UI and future-ready capabilities
-
-2. AI Chatbot (Web & Android)
-   - Technologies: HTML, CSS, JavaScript, Android Studio, Java
-   - Built AI chatbots with basic NLP for mobile and web platforms
-   - Implemented clean UI & interactive UX
-
-EDUCATION:
-• Master of Computer Applications (MCA) - 2024-2026 (Currently pursuing)
-
-CERTIFICATIONS:
-• Cloud Computing - Ludifu (2022)
-• Amazon AWS Workshop - Graphic Era University
-• Research Methodology - NPTEL (2025)
-
-EXTRA ACTIVITIES:
-• NSS Volunteer
-• Tech Writing - Articles on gadgets & tech trends
-• Gaming enthusiast
-• Music lover
-
-STRENGTHS:
-Leadership, Good Listener, Team Player, Goal Oriented
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                max-width: 350px;
+                animation: slideInRight 0.3s ease;
             `;
             
-            // Create and download text file
-            const blob = new Blob([resumeContent], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Umar_Rahi_Resume.txt';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
         }
+
+        // Add notification animations
+        const notificationCSS = document.createElement('style');
+        notificationCSS.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(notificationCSS);
 
         // Particles Animation for Hero Background
         function createParticle() {
