@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <math.h>
+
+// Functions
+double f1(double x) { return 2*pow(x,3) + 10*x; }
+double f2(double x) { return pow(x,2); }
+double f3(double x) { return pow(x,4); }
+double f4(double x) { return 5*pow(x,2) - 10000*x + 7; }
+
+int main() {
+    printf("Comparing Growth of Functions (Big-O Examples)\n\n");
+    printf("%10s %20s %20s %20s %20s\n",
+           "x", "f1=2x^3+10x", "g=x^2", "h=x^4", "p=5x^2-10000x+7");
+
+    // Print values for different x
+    for (int x = 10; x <= 100; x += 10) {
+        printf("%10d %20.2f %20.2f %20.2f %20.2f\n",
+               x, f1(x), f2(x), f3(x), f4(x));
+    }
+
+    // Ratio check for large x
+    double X = 10000;
+    printf("\nRatio checks at x=%.0f:\n", X);
+    printf("f1(x)/x^3 = %.5f\n", f1(X)/pow(X,3));
+    printf("f1(x)/x^2 = %.5f\n", f1(X)/pow(X,2));
+    printf("f1(x)/x^4 = %.8f\n", f1(X)/pow(X,4));
+    printf("f4(x)/x^2 = %.5f\n", f4(X)/pow(X,2));
+
+    return 0;
+}
